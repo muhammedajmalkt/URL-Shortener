@@ -11,16 +11,16 @@ export const shortenUrl = async (req, res) => {
     if (already) {
       return res.json({ shortCode: already.shortCode, longUrl: already.longUrl });
     }
-    
+
     const count = await Url.countDocuments()
     let L = nextPrime(count)
     const base62 = hashUrl(longUrl)
     let short = base62.slice(0, L)
     let existing;
     let attempts = 0
+
     while (attempts < 10) {
       existing = await Url.findOne({ shortCode: short })
-
       if (!existing) break; 
       if (existing.longUrl === longUrl) {
         return res.json({ shortCode: existing.shortCode })
@@ -29,6 +29,7 @@ export const shortenUrl = async (req, res) => {
       short = base62.slice(0, L)
       attempts++;
     }
+    
     if (attempts === 10) {
       return res.status(500).json({ message: "Collision limit reached" });
     }
