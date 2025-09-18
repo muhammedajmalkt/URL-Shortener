@@ -6,7 +6,6 @@ const UrlShorter = () => {
   const [shortUrl, setShortUrl] = useState("");
 //   const API_URL = import.meta.env.VITE_API_URL; 
 
-
   const handleSubmit = async (e) => {    
     e.preventDefault();
     try {
